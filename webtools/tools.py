@@ -36,6 +36,7 @@ def html_local(path: str) -> str:
     Returns:
         Local HTML path
     """
+    assert settings.html_path is not None
     assert path.startswith(settings.html_path)
     return path[len(settings.html_path) :]
 

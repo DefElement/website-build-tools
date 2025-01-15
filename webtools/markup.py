@@ -184,7 +184,7 @@ def list_contributors(format: str = "html") -> str:
             out += heading_with_self_ref("h1", "Contributors", "margin-top:50px")
         out += contributors_out
 
-        if settings.github_token is None:
+        if settings.github_token is None or settings.repo is None:
             warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
         else:
             g = Github(settings.github_token)
@@ -231,7 +231,7 @@ def list_contributors(format: str = "html") -> str:
         for info in people:
             names.append(info["name"])
 
-        if settings.github_token is None:
+        if settings.github_token is None or settings.repo is None:
             warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
         else:
             included = [info["github"] for info in people if "github" in info]
@@ -267,6 +267,7 @@ def preprocess(content: str) -> str:
     Returns:
         Preprocessed content
     """
+    assert settings.dir_path is not None
     for file in os.listdir(settings.dir_path):
         if file.endswith(".md"):
             if f"{{{{{file}}}}}" in content:
@@ -425,8 +426,8 @@ def markup(
 
     for a, b in re_extras:
         out = re.sub(a, b, out)
-    for a, b in str_extras:
-        out = out.replace(a, b)
+    for c, d in str_extras:
+        out = out.replace(c, d)
 
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
 
@@ -458,6 +459,7 @@ def code_include(matches: typing.Match[str]) -> str:
     Returns:
         HTML
     """
+    assert settings.dir_path is not None
     out = "<p class='pcode'>"
     with open(os.path.join(settings.dir_path, matches[1])) as f:
         out += "<br />".join(line.replace(" ", "&nbsp;") for line in f)
@@ -481,6 +483,7 @@ def author_info(matches: typing.Match[str]) -> str:
     Returns:
         HTML
     """
+    assert settings.website_name[0] is not None
     authors, title, url = matches[1].split("|")
     authors = authors.split(";")
     out = "<div class='authors'>Written by "

@@ -17,6 +17,7 @@ def make_html_page(content: str, pagetitle: typing.Optional[str] = None) -> str:
     Return:
         Formatted HTML page
     """
+    assert settings.template_path is not None
     out = ""
     with open(os.path.join(settings.template_path, "intro.html")) as f:
         out += insert_dates(f.read())
