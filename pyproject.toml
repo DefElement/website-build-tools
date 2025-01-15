@@ -16,7 +16,8 @@ repository = "https://github.com/DefElement/website-build-tools"
 
 [project.optional-dependencies]
 style = ["ruff", "mypy"]
-test = ["pytest", "webtools[optional]"]
+test = ["pytest"]
+ci = ["webtools[style,test]"]
 
 [tool.ruff]
 line-length = 100
