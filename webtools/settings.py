@@ -1,5 +1,5 @@
 """Settings."""
-import typing
+import typing as _typing
 
 dir_path: _typing.Optional[str] = None
 html_path: _typing.Optional[str] = None
