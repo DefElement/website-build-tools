@@ -1,4 +1,5 @@
 """Settings."""
+
 import typing as _typing
 
 dir_path: _typing.Optional[str] = None

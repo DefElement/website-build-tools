@@ -4,6 +4,7 @@ import os
 import re
 import shlex
 import typing
+from github import Github
 import warnings
 from datetime import datetime
 from urllib.parse import quote_plus
@@ -137,17 +138,23 @@ def list_contributors(format: str = "html") -> str:
                 person_out += f"<p>{markup(info['desc'])}</p>"
             if "website" in info:
                 website_name = info["website"].split("//")[1].strip("/")
-                person_out += (f"<div class='social'><a href='{info['website']}'>"
-                               "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
-                               f"&nbsp;{website_name}</a></div>")
+                person_out += (
+                    f"<div class='social'><a href='{info['website']}'>"
+                    "<i class='fa-brands fa-internet-explorer' aria-hidden='true'></i>"
+                    f"&nbsp;{website_name}</a></div>"
+                )
             if "email" in info:
-                person_out += (f"<div class='social'><a href='mailto:{info['email']}'>"
-                               "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
-                               f"&nbsp;{info['email']}</a></div>")
+                person_out += (
+                    f"<div class='social'><a href='mailto:{info['email']}'>"
+                    "<i class='fa-regular fa-envelope' aria-hidden='true'></i>"
+                    f"&nbsp;{info['email']}</a></div>"
+                )
             if "github" in info:
-                person_out += (f"<div class='social'><a href='https://github.com/{info['github']}'>"
-                               "<i class='fa-brands fa-github' aria-hidden='true'></i>"
-                               f"&nbsp;{info['github']}</a></div>")
+                person_out += (
+                    f"<div class='social'><a href='https://github.com/{info['github']}'>"
+                    "<i class='fa-brands fa-github' aria-hidden='true'></i>"
+                    f"&nbsp;{info['github']}</a></div>"
+                )
                 included.append(info["github"])
             if "twitter" in info:
                 person_out += (
@@ -157,9 +164,11 @@ def list_contributors(format: str = "html") -> str:
                 )
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
-                person_out += (f"<div class='social'><a href='https://{url}/@{handle}'>"
-                               "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
-                               f"&nbsp;@{handle}@{url}</a></div>")
+                person_out += (
+                    f"<div class='social'><a href='https://{url}/@{handle}'>"
+                    "<i class='fa-brands fa-mastodon' aria-hidden='true'></i>"
+                    f"&nbsp;@{handle}@{url}</a></div>"
+                )
             person_out += "<br style='clear:both' />"
             if "github" in info and info["github"] in editors:
                 editors_out += person_out
@@ -193,22 +202,28 @@ def list_contributors(format: str = "html") -> str:
                 i += 1
             if len(extras) > 0:
                 out += heading_with_self_ref("h2", "Additional contributors")
-                out += (f"<p>The following people have contributed to {settings.website_name[1]}"
-                        " but are yet to add details about themselves to this page:</p>\n<ul>\n")
+                out += (
+                    f"<p>The following people have contributed to {settings.website_name[1]}"
+                    " but are yet to add details about themselves to this page:</p>\n<ul>\n"
+                )
                 for u in extras:
                     out += "<li>"
                     if u[1] is not None:
                         out += f"{u[1]} ("
-                    out += (f"<a href='https://github.com/{u[0]}'>"
-                            "<i class='fa-brands fa-github' aria-hidden='true'></i>"
-                            f"&nbsp;{u[0]}</a>")
+                    out += (
+                        f"<a href='https://github.com/{u[0]}'>"
+                        "<i class='fa-brands fa-github' aria-hidden='true'></i>"
+                        f"&nbsp;{u[0]}</a>"
+                    )
                     if u[1] is not None:
                         out += ")"
                     out += "</li>\n"
                 out += "</ul>"
-                out += ("<p>If you're listed here, you can find instructions for how to add "
-                        "information about yourself on the [contributing page](contributing.md"
-                        "#Adding+yourself+to+the+contributors+list).</p>")
+                out += (
+                    "<p>If you're listed here, you can find instructions for how to add "
+                    "information about yourself on the [contributing page](contributing.md"
+                    "#Adding+yourself+to+the+contributors+list).</p>"
+                )
 
         return out
     else:
@@ -217,8 +232,7 @@ def list_contributors(format: str = "html") -> str:
             names.append(info["name"])
 
         if settings.github_token is None:
-            warnings.warn(
-                "Building without GitHub token. Skipping search for GitHub contributors.")
+            warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
         else:
             included = [info["github"] for info in people if "github" in info]
             g = Github(settings.github_token)
@@ -264,8 +278,11 @@ def preprocess(content: str) -> str:
     if "{{list contributors}}" in content:
         content = content.replace("{{list contributors}}", list_contributors())
     if "{{list contributors|" in content:
-        content = re.sub("{{list contributors\\|([^}]+)}}",
-                         lambda matches: list_contributors(matches[1]), content)
+        content = re.sub(
+            "{{list contributors\\|([^}]+)}}",
+            lambda matches: list_contributors(matches[1]),
+            content,
+        )
     content = re.sub(r"{{author-info::([^}]+)}}", author_info, content)
 
     return content
@@ -306,7 +323,7 @@ def markup(
     content: str,
     re_extras: typing.List[typing.Tuple[str, typing.Callable]] = [],
     str_extras: typing.List[typing.Tuple[str, str]] = [],
-    insert_links_f: typing.Callable = insert_links
+    insert_links_f: typing.Callable = insert_links,
 ) -> str:
     """Markup content.
 
@@ -490,7 +507,8 @@ def author_info(matches: typing.Match[str]) -> str:
         f"<li>{format_names(authors, 'citation')}. <i>{settings.website_name[0]}: {title}</i>,"
         f"{{{{date:Y}}}}, <a href='{settings.url}/{url}'>{settings.url}/{url}</a> "
         "[Online; accessed: {{date:D-M-Y}}]</li>\n"
-        "</ul></div>")
+        "</ul></div>"
+    )
     return out
 
 
