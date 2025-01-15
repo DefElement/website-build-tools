@@ -320,12 +320,7 @@ def insert_dates(txt: str) -> str:
     return txt
 
 
-def markup(
-    content: str,
-    re_extras: typing.List[typing.Tuple[str, typing.Callable]] = [],
-    str_extras: typing.List[typing.Tuple[str, str]] = [],
-    insert_links_f: typing.Callable = insert_links,
-) -> str:
+def markup(content: str) -> str:
     """Markup content.
 
     Args:
@@ -421,12 +416,17 @@ def markup(
 
     out = out.replace("(CODE_OF_CONDUCT.md)", "(code-of-conduct.md)")
 
-    out = insert_links(out)
+    out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
+
+    if settings.insert_links is None:
+        out = insert_links(out)
+    else:
+        out = settings.insert_links(out)
     out = re.sub(r"{{code-include::([^}]+)}}", code_include, out)
 
-    for a, b in re_extras:
+    for a, b in settings.re_extras:
         out = re.sub(a, b, out)
-    for c, d in str_extras:
+    for c, d in settings.str_extras:
         out = out.replace(c, d)
 
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
@@ -507,7 +507,7 @@ def author_info(matches: typing.Match[str]) -> str:
         "```\n\n"
         "This will create a reference along the lines of:\n\n"
         "<ul class='citations'>"
-        f"<li>{format_names(authors, 'citation')}. <i>{settings.website_name[0]}: {title}</i>,"
+        f"<li>{format_names(authors, 'citation')}. <i>{settings.website_name[0]}: {title}</i>, "
         f"{{{{date:Y}}}}, <a href='{settings.url}/{url}'>{settings.url}/{url}</a> "
         "[Online; accessed: {{date:D-M-Y}}]</li>\n"
         "</ul></div>"
