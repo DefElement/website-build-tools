@@ -421,7 +421,7 @@ def markup(
 
     out = out.replace("(CODE_OF_CONDUCT.md)", "(code-of-conduct.md)")
 
-    out = insert_links(out)
+    out = insert_links_f(out)
     out = re.sub(r"{{code-include::([^}]+)}}", code_include, out)
 
     for a, b in re_extras:
