@@ -5,14 +5,6 @@ import typing
 import yaml
 from webtools import settings
 
-if typing.TYPE_CHECKING:
-    from numpy import float64
-    from numpy.typing import NDArray
-
-    Array = NDArray[float64]
-else:
-    Array = typing.Any
-
 
 def parse_metadata(content: str) -> typing.Tuple[typing.Dict[str, typing.Any], str]:
     """Parse metadata.
@@ -55,3 +47,19 @@ def comma_and_join(ls: typing.List[str], oxford_comma: bool = True) -> str:
     if len(ls) == 2:
         return f"{ls[0]} and {ls[1]}"
     return ", ".join(ls[:-1]) + ("," if oxford_comma else "") + " and " + ls[-1]
+
+
+def insert_author_info(content: str, authors: typing.List[str], url: str) -> str:
+    """Insert author info into content.
+
+    Args:
+        content: The content
+        authors: List of authors
+        url: A URL
+
+    Returns:
+        Content with authrso inserted
+    """
+    assert content.startswith("# ")
+    title, content = content.split("\n", 1)
+    return f"{title}\n{{{{author-info::{';'.join(authors)}|{title[1:].strip()}|{url}}}}}\n{content}"
