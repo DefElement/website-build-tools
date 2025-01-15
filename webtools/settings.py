@@ -1,13 +1,14 @@
 """Settings."""
+import typing
 
-dir_path = ""
-html_path = ""
-template_path = ""
-github_token = ""
+dir_path: _typing.Optional[str] = None
+html_path: _typing.Optional[str] = None
+template_path: _typing.Optional[str] = None
+github_token: _typing.Optional[str] = None
 
 owners = []
 editors = []
 contributors = []
-url = ""
-website_name = ["", ""]
-repo = ""
+url: _typing.Optional[str] = None
+website_name: _Typing.List[_typing.Optional[str]] = [None, None]
+repo: _typing.Optional[str] = None
