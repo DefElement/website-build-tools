@@ -440,7 +440,7 @@ def markup(
         out += "<ul class='citations'>"
         out += "".join(
             [
-                f"<li><a class='refid' id='ref{i+1}'>[{i+1}]</a> {j}</li>"
+                f"<li><a class='refid' id='ref{i + 1}'>[{i + 1}]</a> {j}</li>"
                 for i, j in enumerate(page_references)
             ]
         )
