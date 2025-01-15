@@ -13,3 +13,7 @@ contributors: _typing.List[_typing.Dict[str, str]] = []
 url: _typing.Optional[str] = None
 website_name: _typing.List[_typing.Optional[str]] = [None, None]
 repo: _typing.Optional[str] = None
+
+re_extras: _typing.List[_typing.Tuple[str, _typing.Callable]] = []
+str_extras: _typing.List[_typing.Tuple[str, str]] = []
+insert_links: _typing.Optional[_typing.Callable] = None
