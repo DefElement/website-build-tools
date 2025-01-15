@@ -10,5 +10,5 @@ owners = []
 editors = []
 contributors = []
 url: _typing.Optional[str] = None
-website_name: _Typing.List[_typing.Optional[str]] = [None, None]
+website_name: _typing.List[_typing.Optional[str]] = [None, None]
 repo: _typing.Optional[str] = None
