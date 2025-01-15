@@ -8,6 +8,7 @@ from webtools import settings
 if typing.TYPE_CHECKING:
     from numpy import float64
     from numpy.typing import NDArray
+
     Array = NDArray[float64]
 else:
     Array = typing.Any
@@ -44,7 +45,7 @@ def html_local(path: str) -> str:
         Local HTML path
     """
     assert path.startswith(settings.html_path)
-    return path[len(settings.html_path):]
+    return path[len(settings.html_path) :]
 
 
 def comma_and_join(ls: typing.List[str], oxford_comma: bool = True) -> str:

@@ -23,7 +23,7 @@ def heading(hx: str, content: str, style: typing.Optional[str] = None) -> str:
     """
     out = f"<{hx}"
     if style is not None:
-        out += f" style=\"{style}\""
+        out += f' style="{style}"'
     out += f">{content}</{hx}>\n"
     return out
 
@@ -39,10 +39,10 @@ def heading_with_self_ref(hx: str, content: str, style: typing.Optional[str] = N
         Heading with self reference
     """
     id = quote_plus(content)
-    out = f"<{hx} id=\"{id}\""
+    out = f'<{hx} id="{id}"'
     if style is not None:
-        out += f" style=\"{style}\""
-    out += f"><a href=\"#{id}\">{content}</a></{hx}>\n"
+        out += f' style="{style}"'
+    out += f'><a href="#{id}">{content}</a></{hx}>\n'
     return out
 
 
@@ -60,8 +60,8 @@ def preprocess(content: str) -> str:
             if f"{{{{{file}}}}}" in content:
                 with open(os.path.join(settings.dir_path, file)) as f:
                     content = content.replace(
-                        f"{{{{{file}}}}}",
-                        f.read().replace("](https://quadraturerules.org", "]("))
+                        f"{{{{{file}}}}}", f.read().replace("](https://quadraturerules.org", "](")
+                    )
     return content
 
 
@@ -173,8 +173,12 @@ def markup(content: str) -> str:
     if len(page_references) > 0:
         out += heading_with_self_ref("h2", "References")
         out += "<ul class='citations'>"
-        out += "".join([f"<li><a class='refid' id='ref{i+1}'>[{i+1}]</a> {j}</li>"
-                        for i, j in enumerate(page_references)])
+        out += "".join(
+            [
+                f"<li><a class='refid' id='ref{i+1}'>[{i+1}]</a> {j}</li>"
+                for i, j in enumerate(page_references)
+            ]
+        )
         out += "</ul>"
 
     return insert_dates(out)
@@ -245,14 +249,14 @@ def python_highlight(txt: str) -> str:
             line = lsp[0]
             comment = f"<span style='color:#FF8800'>#{lsp[1]}</span>"
 
-        lsp = line.split("\"")
+        lsp = line.split('"')
         line = lsp[0]
 
         for i, j in enumerate(lsp[1:]):
             if i % 2 == 0:
                 line += f"<span style='color:#DD2299'>\"{j}"
             else:
-                line += f"\"</span>{j}"
+                line += f'"</span>{j}'
 
         out.append(line + comment)
     return "<br />".join(out)
@@ -268,6 +272,7 @@ def bash_highlight(txt: str) -> str:
         Snippet with syntax highlighting
     """
     txt = txt.replace(" ", "&nbsp;")
-    txt = re.sub("(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)",
-                 r"<span style='color:#FF8800'>\1</span>", txt)
+    txt = re.sub(
+        "(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)", r"<span style='color:#FF8800'>\1</span>", txt
+    )
     return "<br />".join(txt.split("\n"))

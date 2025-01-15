@@ -114,7 +114,7 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
     Returns:
         The citation in BibTeX format
     """
-    if 'type' not in r:
+    if "type" not in r:
         r["type"] = "article"
     out = f"@{r['type']}{{{id},\n"
 
@@ -139,10 +139,7 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
             out += " " * (10 - len(i)) + f"{i} = {{{html_to_tex(r[j])}}},\n"
 
     # Numerical fields
-    for i, j in [
-        ("VOLUME", "volume"), ("NUMBER", "issue"),
-        ("YEAR", "year"), ("DOI", "doi")
-    ]:
+    for i, j in [("VOLUME", "volume"), ("NUMBER", "issue"), ("YEAR", "year"), ("DOI", "doi")]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{r[j]}}},\n"
 
