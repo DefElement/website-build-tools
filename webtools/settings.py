@@ -1,13 +1,13 @@
 """Settings."""
 
-dir_path = None
-html_path = None
-template_path = None
-github_token = None
+dir_path = ""
+html_path = ""
+template_path = ""
+github_token = ""
 
 owners = []
 editors = []
 contributors = []
-url = None
-website_name = [None, None]
-repo = None
+url = ""
+website_name = ["", ""]
+repo = ""
