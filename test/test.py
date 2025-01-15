@@ -1,2 +1,2 @@
 def test_import():
-    import webtools
+    import webtools  # noqa: F401
