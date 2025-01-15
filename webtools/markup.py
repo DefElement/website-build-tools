@@ -507,7 +507,7 @@ def author_info(matches: typing.Match[str]) -> str:
         "```\n\n"
         "This will create a reference along the lines of:\n\n"
         "<ul class='citations'>"
-        f"<li>{format_names(authors, 'citation')}. <i>{settings.website_name[0]}: {title}</i>,"
+        f"<li>{format_names(authors, 'citation')}. <i>{settings.website_name[0]}: {title}</i>, "
         f"{{{{date:Y}}}}, <a href='{settings.url}/{url}'>{settings.url}/{url}</a> "
         "[Online; accessed: {{date:D-M-Y}}]</li>\n"
         "</ul></div>"
