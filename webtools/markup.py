@@ -289,7 +289,7 @@ def preprocess(content: str) -> str:
     return content
 
 
-def insert_links(txt: str) -> str:
+def insert_links(txt: str, root_dir: str = "") -> str:
     """Insert links.
 
     Args:
@@ -298,8 +298,14 @@ def insert_links(txt: str) -> str:
     Returns:
         Text with links
     """
-    txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)
-    txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", r"(/\1.html#\2)", txt)
+    txt = re.sub(r"\(\/([^\)]+)\.md\)", r"(\1.html)", txt)
+    txt = re.sub(r"\(\/([^\)]+)\.md#([^\)]+)\)", r"(\1.html#\2)", txt)
+    if root_dir == "":
+        txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)
+        txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", r"(/\1.html#\2)", txt)
+    else:
+        txt = re.sub(r"\(([^\)]+)\.md\)", rf"(/{root_dir}/\1.html)", txt)
+        txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", rf"(/{root_dir}/\1.html#\2)", txt)
     txt = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", txt)
     return txt
 
@@ -320,7 +326,7 @@ def insert_dates(txt: str) -> str:
     return txt
 
 
-def markup(content: str) -> str:
+def markup(content: str, root_dir: str = "") -> str:
     """Markup content.
 
     Args:
@@ -419,9 +425,9 @@ def markup(content: str) -> str:
     out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
 
     if settings.insert_links is None:
-        out = insert_links(out)
+        out = insert_links(out, root_dir)
     else:
-        out = settings.insert_links(out)
+        out = settings.insert_links(out, root_dir)
     out = re.sub(r"{{code-include::([^}]+)}}", code_include, out)
 
     for a, b in settings.re_extras:
