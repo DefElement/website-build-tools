@@ -1,9 +1,18 @@
 """Tools."""
 
+import os
 import typing
 
 import yaml
 from webtools import settings
+
+
+def join(*folders):
+    """Join multiple folders with os.path.join."""
+    if len(folders) == 1:
+        return folders[0]
+
+    return join(os.path.join(*folders[:2]), *folders[2:])
 
 
 def parse_metadata(content: str) -> typing.Tuple[typing.Dict[str, typing.Any], str]:
