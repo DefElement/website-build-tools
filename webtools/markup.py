@@ -298,12 +298,14 @@ def insert_links(txt: str, root_dir: str = "") -> str:
     Returns:
         Text with links
     """
+    txt = re.sub(r"\(\/([^\)]+)\.md\)", r"(\1.html)", txt)
+    txt = re.sub(r"\(\/([^\)]+)\.md#([^\)]+)\)", r"(\1.html#\2)", txt)
     if root_dir == "":
         txt = re.sub(r"\(([^\)]+)\.md\)", r"(/\1.html)", txt)
         txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", r"(/\1.html#\2)", txt)
     else:
-        txt = re.sub(r"\(([^\)]+)\.md\)", rf"(/{root_dir}\1.html)", txt)
-        txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", rf"(/{root_dir}\1.html#\2)", txt)
+        txt = re.sub(r"\(([^\)]+)\.md\)", rf"(/{root_dir}/\1.html)", txt)
+        txt = re.sub(r"\(([^\)]+)\.md#([^\)]+)\)", rf"(/{root_dir}/\1.html#\2)", txt)
     txt = re.sub(r"\[([^\]]+)\]\(([^\)]+)\)", r"<a href='\2'>\1</a>", txt)
     return txt
 
