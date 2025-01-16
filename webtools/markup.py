@@ -387,10 +387,6 @@ def markup(content: str, root_dir: str = "") -> str:
                     liopen = False
                 out += "</ul>\n"
                 ulopen = False
-        elif line == "```":
-            code = not code
-            is_python = False
-            is_bash = False
         elif line == "```python":
             code = not code
             is_python = True
@@ -399,6 +395,10 @@ def markup(content: str, root_dir: str = "") -> str:
             code = not code
             is_python = False
             is_bash = True
+        elif line.startswith("```"):
+            code = not code
+            is_python = False
+            is_bash = False
         else:
             if not ulopen and not popen and not line.startswith("<") and not line.startswith("\\["):
                 if code:
