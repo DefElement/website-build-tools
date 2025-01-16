@@ -563,8 +563,10 @@ def bash_highlight(txt: str) -> str:
     """
     txt = txt.replace(" ", "&nbsp;")
     txt = re.sub(
-        "(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)", r"<span style='color:#FF8800'>\1</span>", txt
+        r"(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)", r"<span style='color:#FF8800'>\1</span>", txt
     )
+    for keyword in ["wget", "mkdir", "tar", "cd", "cmake", "make", "ls", "cargo"]:
+        txt = re.sub(rf"({keyword})(&nbsp;|$)", r"<span style='color:#FF8800'>\1</span>\2", txt)
     return "<br />".join(txt.split("\n"))
 
 
