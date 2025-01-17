@@ -162,6 +162,12 @@ def list_contributors(format: str = "html") -> str:
                     "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
                     f"&nbsp;@{info['twitter']}</a></div>"
                 )
+            if "bluesky" in info:
+                person_out += (
+                    f"<div class='social'><a href='https://bsky.app/profile/{info['bluesky']}'>"
+                    "<i class='fa-brands fa-bluesky' aria-hidden='true'></i>"
+                    f"&nbsp;@{info['bluesky']}</a></div>"
+                )
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
                 person_out += (
