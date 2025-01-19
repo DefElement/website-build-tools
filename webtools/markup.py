@@ -10,6 +10,7 @@ from datetime import datetime
 from urllib.parse import quote_plus
 
 from webtools import settings
+from webtools.code_markup import code_highlight
 from webtools.tools import comma_and_join
 
 
@@ -345,8 +346,7 @@ def markup(content: str, root_dir: str = "") -> str:
     ulopen = False
     liopen = False
     code = False
-    is_python = False
-    is_bash = False
+    lang: typing.Optional[str] = None
 
     for line in content.split("\n"):
         if line.startswith("#"):
@@ -387,18 +387,9 @@ def markup(content: str, root_dir: str = "") -> str:
                     liopen = False
                 out += "</ul>\n"
                 ulopen = False
-        elif line == "```python":
-            code = not code
-            is_python = True
-            is_bash = False
-        elif line == "```bash":
-            code = not code
-            is_python = False
-            is_bash = True
         elif line.startswith("```"):
             code = not code
-            is_python = False
-            is_bash = False
+            lang = line[3:].strip()
         else:
             if not ulopen and not popen and not line.startswith("<") and not line.startswith("\\["):
                 if code:
@@ -407,12 +398,7 @@ def markup(content: str, root_dir: str = "") -> str:
                     out += "<p>"
                 popen = True
             if code:
-                if is_python:
-                    out += python_highlight(line.replace(" ", "&nbsp;"))
-                elif is_bash:
-                    out += bash_highlight(line.replace(" ", "&nbsp;"))
-                else:
-                    out += line.replace(" ", "&nbsp;")
+                out += code_highlight(line, lang)
                 out += "<br />"
             else:
                 out += line
@@ -519,55 +505,6 @@ def author_info(matches: typing.Match[str]) -> str:
         "</ul></div>"
     )
     return out
-
-
-def python_highlight(txt: str) -> str:
-    """Apply syntax highlighting to Python snippet.
-
-    Args:
-        txt: Python snippet
-
-    Returns:
-        Snippet with syntax highlighting
-    """
-    txt = txt.replace(" ", "&nbsp;")
-    out = []
-    for line in txt.split("\n"):
-        comment = ""
-        if "#" in line:
-            lsp = line.split("#", 1)
-            line = lsp[0]
-            comment = f"<span style='color:#FF8800'>#{lsp[1]}</span>"
-
-        lsp = line.split('"')
-        line = lsp[0]
-
-        for i, j in enumerate(lsp[1:]):
-            if i % 2 == 0:
-                line += f"<span style='color:#DD2299'>\"{j}"
-            else:
-                line += f'"</span>{j}'
-
-        out.append(line + comment)
-    return "<br />".join(out)
-
-
-def bash_highlight(txt: str) -> str:
-    """Apply syntax highlighting to Bash snippet.
-
-    Args:
-        txt: Bash snippet
-
-    Returns:
-        Snippet with syntax highlighting
-    """
-    txt = txt.replace(" ", "&nbsp;")
-    txt = re.sub(
-        r"(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)", r"<span style='color:#FF8800'>\1</span>", txt
-    )
-    for keyword in ["wget", "mkdir", "tar", "cd", "cmake", "make", "ls", "cargo"]:
-        txt = re.sub(rf"({keyword})(&nbsp;|$)", r"<span style='color:#FF8800'>\1</span>\2", txt)
-    return "<br />".join(txt.split("\n"))
 
 
 def add_citation(matches: typing.Match[str]) -> str:
