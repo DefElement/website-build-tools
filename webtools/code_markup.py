@@ -111,7 +111,7 @@ def bash_highlight(txt: str) -> str:
     return "<br />".join(txt.split("\n"))
 
 
-def code_highlight(txt: str, lang: str):
+def code_highlight(txt: str, lang: typing.Optional[str] = None):
     if lang == "python":
         return python_highlight(txt.replace(" ", "&nbsp;"))
     if lang == "rust":
