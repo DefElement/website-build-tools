@@ -163,6 +163,12 @@ def list_contributors(format: str = "html") -> str:
                     "<i class='fa-brands fa-twitter' aria-hidden='true'></i>"
                     f"&nbsp;@{info['twitter']}</a></div>"
                 )
+            if "bluesky" in info:
+                person_out += (
+                    f"<div class='social'><a href='https://bsky.app/profile/{info['bluesky']}'>"
+                    "<i class='fa-brands fa-bluesky' aria-hidden='true'></i>"
+                    f"&nbsp;@{info['bluesky']}</a></div>"
+                )
             if "mastodon" in info:
                 handle, url = info["mastodon"].split("@")
                 person_out += (
@@ -182,7 +188,8 @@ def list_contributors(format: str = "html") -> str:
                 "<p>The contributors listed in this section are responsible for reviewing "
                 f"contributions to {settings.website_name[1]}.</p>\n{editors_out}"
             )
-            out += heading_with_self_ref("h1", "Contributors", "margin-top:50px")
+            if contributors_out != "":
+                out += heading_with_self_ref("h1", "Contributors", "margin-top:50px")
         out += contributors_out
 
         if settings.github_token is None or settings.repo is None:
