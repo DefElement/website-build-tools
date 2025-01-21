@@ -356,7 +356,10 @@ def markup(content: str, root_dir: str = "") -> str:
     lang: typing.Optional[str] = None
 
     for line in content.split("\n"):
-        if line.startswith("#"):
+        if line.startswith("```"):
+            code = not code
+            lang = line[3:].strip()
+        elif not code and line.startswith("#"):
             if popen:
                 out += "</p>\n"
                 popen = False
@@ -371,7 +374,7 @@ def markup(content: str, root_dir: str = "") -> str:
                 line = line[1:]
                 i += 1
             out += heading_with_self_ref(f"h{i}", line.strip())
-        elif line.startswith("* "):
+        elif not code and line.startswith("* "):
             if popen:
                 out += "</p>\n"
                 popen = False
@@ -394,9 +397,6 @@ def markup(content: str, root_dir: str = "") -> str:
                     liopen = False
                 out += "</ul>\n"
                 ulopen = False
-        elif line.startswith("```"):
-            code = not code
-            lang = line[3:].strip()
         else:
             if not ulopen and not popen and not line.startswith("<") and not line.startswith("\\["):
                 if code:
