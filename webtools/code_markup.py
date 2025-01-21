@@ -103,6 +103,12 @@ def cpp_highlight(txt: str) -> str:
         [
             "#include",
             "auto",
+            "using",
+            "for",
+            "if",
+            "else",
+            "function",
+            "while",
         ],
     )
 
