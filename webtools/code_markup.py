@@ -6,7 +6,6 @@ import typing
 
 def _highlight(txt: str, comment_start: str, keywords: typing.List[str]) -> str:
     """General highlight function."""
-    txt = txt.replace(" ", "&nbsp;")
     out = []
     for line in txt.split("\n"):
         comment = ""
@@ -98,7 +97,6 @@ def bash_highlight(txt: str) -> str:
     Returns:
         Snippet with syntax highlighting
     """
-    txt = txt.replace(" ", "&nbsp;")
     txt = re.sub(
         r"(python3?(?:&nbsp;-m&nbsp;.+?)?&nbsp;)", r"<span style='color:#FF8800'>\1</span>", txt
     )
@@ -112,10 +110,16 @@ def bash_highlight(txt: str) -> str:
 
 
 def code_highlight(txt: str, lang: typing.Optional[str] = None):
+    for a, b in [
+        (" ", "&nbsp;"),
+        ("<", "&lt;"),
+        (">", "&gt;"),
+    ]:
+        txt = txt.replace(a, b)
     if lang == "python":
-        return python_highlight(txt.replace(" ", "&nbsp;"))
+        return python_highlight(txt)
     if lang == "rust":
-        return rust_highlight(txt.replace(" ", "&nbsp;"))
+        return rust_highlight(txt)
     if lang == "bash":
-        return bash_highlight(txt.replace(" ", "&nbsp;"))
-    return txt.replace(" ", "&nbsp;")
+        return bash_highlight(txt)
+    return txt
