@@ -88,6 +88,25 @@ def rust_highlight(txt: str) -> str:
     )
 
 
+def cpp_highlight(txt: str) -> str:
+    """Apply syntax highlighting to C++ snippet.
+
+    Args:
+        txt: Python snippet
+
+    Returns:
+        Snippet with syntax highlighting
+    """
+    return _highlight(
+        txt,
+        "//",
+        [
+            "#include",
+            "auto",
+        ],
+    )
+
+
 def bash_highlight(txt: str) -> str:
     """Apply syntax highlighting to Bash snippet.
 
@@ -120,6 +139,8 @@ def code_highlight(txt: str, lang: typing.Optional[str] = None):
         return python_highlight(txt)
     if lang == "rust":
         return rust_highlight(txt)
+    if lang == "cpp":
+        return cpp_highlight(txt)
     if lang == "bash":
         return bash_highlight(txt)
     return txt
