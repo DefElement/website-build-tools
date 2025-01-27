@@ -1,5 +1,5 @@
 [project]
-name = "webtools"
+name = "website-build-tools"
 version = "0.1.0"
 description = "tools for building websites, used by defelement.org and quadraturerules.org"
 readme = "README.md"
