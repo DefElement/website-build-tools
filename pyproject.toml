@@ -1,5 +1,5 @@
 [project]
-name = "webtools"
+name = "website-build-tools"
 version = "0.1.0"
 description = "tools for building websites, used by defelement.org and quadraturerules.org"
 readme = "README.md"
@@ -17,7 +17,7 @@ repository = "https://github.com/DefElement/website-build-tools"
 [project.optional-dependencies]
 style = ["ruff", "mypy"]
 test = ["pytest"]
-ci = ["webtools[style,test]"]
+ci = ["website-build-tools[style,test]"]
 
 [tool.ruff]
 line-length = 100
