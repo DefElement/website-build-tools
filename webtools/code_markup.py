@@ -1,7 +1,16 @@
 """Highlighting for code snippets."""
 
 import re
+from webtools import settings
+from webtools.tools import join, mkdir
 import typing
+
+try:
+    import fortran77punchcards
+
+    f77: typing.Optional[int] = 0
+except ModuleNotFoundError:
+    f77 = None
 
 
 def _highlight(txt: str, comment_start: str, keywords: typing.List[str]) -> str:
@@ -135,6 +144,16 @@ def bash_highlight(txt: str) -> str:
 
 
 def code_highlight(txt: str, lang: typing.Optional[str] = None):
+    global f77
+
+    if f77 is not None and lang == "fortran77":
+        assert settings.html_path is not None
+        f77 += 1
+        img = fortran77punchcards.punch.make_script(txt.split("\n"), width=600)
+        mkdir(join(settings.html_path, "f77"))
+        img.save(join(settings.html_path, "f77", f"{f77}.png"))
+        return f"<img src='/f77/{f77}.png'>"
+
     for a, b in [
         (" ", "&nbsp;"),
         ("<", "&lt;"),
