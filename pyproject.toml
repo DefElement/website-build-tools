@@ -18,6 +18,7 @@ repository = "https://github.com/DefElement/website-build-tools"
 style = ["ruff", "mypy"]
 test = ["pytest"]
 ci = ["website-build-tools[style,test]"]
+f77 = ["fortran77punchcards"]
 
 [tool.ruff]
 line-length = 100

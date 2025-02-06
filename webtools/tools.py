@@ -15,6 +15,12 @@ def join(*folders):
     return join(os.path.join(*folders[:2]), *folders[2:])
 
 
+def mkdir(path: str):
+    """Make a directory."""
+    if not os.path.isdir(path):
+        os.mkdir(path)
+
+
 def parse_metadata(content: str) -> typing.Tuple[typing.Dict[str, typing.Any], str]:
     """Parse metadata.
 
