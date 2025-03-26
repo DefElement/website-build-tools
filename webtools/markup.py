@@ -486,7 +486,7 @@ def author_info(matches: typing.Match[str]) -> str:
     authors, title, url = matches[1].split("|")
     authors = authors.split(";")
     out = "<div class='authors'>Written by "
-    out += " ".join(" ".join(i.split(", ")[::-1]) for i in authors)
+    out += comma_and_join([" ".join(i.split(", ")[::-1]) for i in authors])
     out += (
         "</div>\n"
         "<a class='show_eg_link' href='javascript:show_author_cite_info()' id='showcitelink' "
