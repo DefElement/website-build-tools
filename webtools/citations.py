@@ -132,7 +132,9 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
 
     # Fields with caps that need wrapping
     for i, j in [
-        ("TITLE", "title"), ("BOOKTITLE", "booktitle"), ("SCHOOL", "thesis-institution"),
+        ("TITLE", "title"),
+        ("BOOKTITLE", "booktitle"),
+        ("SCHOOL", "thesis-institution"),
     ]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{wrap_caps(html_to_tex(r[j]))}}},\n"
