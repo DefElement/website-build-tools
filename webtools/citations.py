@@ -48,6 +48,8 @@ def markup_citation(r: typing.Dict[str, typing.Any]) -> str:
             out += f", {r['pagestart']}&ndash;{r['pageend']}"
     elif "arxiv" in r:
         out += f", ar&Chi;iv: <a href='https://arxiv.org/abs/{r['arxiv']}'>{r['arxiv']}</a>"
+    elif "thesis-institution" in r:
+        out += f" (PhD thesis, {r['thesis-institution']})"
     if "booktitle" in r:
         out += f", in <em>{r['booktitle']}</em>"
         if "editor" in r:
@@ -93,8 +95,8 @@ def html_to_tex(txt: str) -> str:
     """
     txt = re.sub(r"&([A-Za-z])acute;", r"\\'\1", txt)
     txt = re.sub(r"&([A-Za-z])grave;", r"\\`\1", txt)
-    txt = re.sub(r"&([A-Za-z])caron;", r"\\v{\1}", txt)
-    txt = re.sub(r"&([A-Za-z])uml;", r"\\\"\1", txt)
+    txt = re.sub(r"&([A-Za-z])caron;", r"\v{\1}", txt)
+    txt = re.sub(r"&([A-Za-z])uml;", r'\\"\1', txt)
     txt = re.sub(r"&([A-Za-z])cedil;", r"\\c{\1}", txt)
     txt = re.sub(r"&([A-Za-z])circ;", r"\\^\1", txt)
     txt = re.sub(r"&([A-Za-z])tilde;", r"\\~\1", txt)
@@ -129,7 +131,9 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
             out += "},\n"
 
     # Fields with caps that need wrapping
-    for i, j in [("TITLE", "title"), ("BOOKTITLE", "booktitle")]:
+    for i, j in [
+        ("TITLE", "title"), ("BOOKTITLE", "booktitle"), ("SCHOOL", "thesis-institution"),
+    ]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{wrap_caps(html_to_tex(r[j]))}}},\n"
 
