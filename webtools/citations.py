@@ -46,6 +46,8 @@ def markup_citation(r: typing.Dict[str, typing.Any]) -> str:
                 out += f"({r['issue']})"
         if "pagestart" in r and "pageend" in r:
             out += f", {r['pagestart']}&ndash;{r['pageend']}"
+    elif "howpublished" in r:
+        out += f", <em>{r['howpublished']}</em>"
     elif "arxiv" in r:
         out += f", ar&Chi;iv: <a href='https://arxiv.org/abs/{r['arxiv']}'>{r['arxiv']}</a>"
     elif "thesis-institution" in r:
@@ -140,7 +142,7 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
             out += " " * (10 - len(i)) + f"{i} = {{{wrap_caps(html_to_tex(r[j]))}}},\n"
 
     # Text fields
-    for i, j in [("JOURNAL", "journal")]:
+    for i, j in [("JOURNAL", "journal"), ("HOWPUBLISHED", "howpublished")]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{html_to_tex(r[j])}}},\n"
 
