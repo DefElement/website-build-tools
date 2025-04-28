@@ -7,12 +7,17 @@ from webtools import settings
 from webtools.markup import insert_dates
 
 
-def make_html_page(content: str, pagetitle: typing.Optional[str] = None) -> str:
+def make_html_page(
+    content: str,
+    pagetitle: typing.Optional[str] = None,
+    extra_head: typing.Optional[str] = None,
+) -> str:
     """Make a HTML page.
 
     Args:
         content: Page content
         pagetitle: Page title
+        extra_head: Extra HTML to include in <head>
 
     Return:
         Formatted HTML page
@@ -21,6 +26,9 @@ def make_html_page(content: str, pagetitle: typing.Optional[str] = None) -> str:
     out = ""
     with open(os.path.join(settings.template_path, "intro.html")) as f:
         out += insert_dates(f.read())
+    if extra_head is not None:
+        a, b = out.split("<head>")
+        out = f"{a}<head>\n{extra_head}\n{b}"
     if pagetitle is None:
         out = out.replace("{{: pagetitle}}", "")
         out = out.replace("{{pagetitle | }}", "")
