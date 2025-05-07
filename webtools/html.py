@@ -1,4 +1,4 @@
-    """HTML tools."""
+"""HTML tools."""
 
 import os
 import typing
@@ -41,9 +41,7 @@ def make_html_page(
     return out
 
 
-def make_html_forwarding_page(
-    url: str
-) -> str:
+def make_html_forwarding_page(url: str) -> str:
     """Make a page that will redirect.
 
     Args:
@@ -53,8 +51,7 @@ def make_html_forwarding_page(
         Formatted HTML page
     """
     assert url[0] == "/"
-    return make_html_page(content=(
-        f"This page has moved to <a href='{url}'>{settings.url}{url}}</a>""
-    ), extra_head=(
-        f"<meta http-equiv='refresh' content='0; URL={url}' />")
-    ))
+    return make_html_page(
+        content=(f"This page has moved to <a href='{url}'>{settings.url}{url}</a>"),
+        extra_head=(f"<meta http-equiv='refresh' content='0; URL={url}' />"),
+    )
