@@ -39,3 +39,19 @@ def make_html_page(
     with open(os.path.join(settings.template_path, "outro.html")) as f:
         out += insert_dates(f.read())
     return out
+
+
+def make_html_forwarding_page(url: str) -> str:
+    """Make a page that will redirect.
+
+    Args:
+        url: the URL to redirect to
+
+    Return:
+        Formatted HTML page
+    """
+    assert url[0] == "/"
+    return make_html_page(
+        content=(f"This page has moved to <a href='{url}'>{settings.url}{url}</a>"),
+        extra_head=(f"<meta http-equiv='refresh' content='0; URL={url}' />"),
+    )
