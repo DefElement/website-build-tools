@@ -38,6 +38,10 @@ def make_html_page(
     out += content
     with open(os.path.join(settings.template_path, "outro.html")) as f:
         out += insert_dates(f.read())
+    if settings.local_prefix is not None:
+        for q in ["'", '"']:
+            out = out.replace(f"src={q}/", f"src={q}/{settings.local_prefix}/")
+            out = out.replace(f"href={q}/", f"href={q}/{settings.local_prefix}/")
     return out
 
 
