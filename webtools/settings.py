@@ -12,7 +12,7 @@ editors: _typing.List[str] = []
 contributors: _typing.List[_typing.Dict[str, str]] = []
 url: _typing.Optional[str] = None
 website_name: _typing.List[_typing.Optional[str]] = [None, None]
-local_prefix: _typin.Optional[str] = None
+local_prefix: _typing.Optional[str] = None
 repo: _typing.Optional[str] = None
 
 re_extras: _typing.List[_typing.Tuple[str, _typing.Callable]] = []
