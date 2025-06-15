@@ -293,7 +293,8 @@ def preprocess(content: str) -> str:
             content,
         )
     content = re.sub(r"{{author-info::([^}]+)}}", author_info, content)
-    content = content.replace("{{url}}", settings.url, content)
+    if settings.url is not None:
+        content = content.replace("{{url}}", settings.url, content)
 
     return content
 
