@@ -294,8 +294,7 @@ def preprocess(content: str) -> str:
         )
     content = re.sub(r"{{author-info::([^}]+)}}", author_info, content)
     if settings.url is not None:
-        assert isinstance(settings.url, str)
-        content = content.replace("{{url}}", settings.url, content)
+        content = content.replace("{{url}}", settings.url)
 
     return content
 
