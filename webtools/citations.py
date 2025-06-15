@@ -6,63 +6,93 @@ import typing
 from webtools.tools import comma_and_join
 
 
-def markup_authors(a: typing.Union[str, typing.List[str]]) -> str:
+def markup_authors(a: typing.Union[str, typing.List[str]], format: str = "HTML") -> str:
     """Markup authors.
 
     Args:
         a: Authors
+        format: Format (HTML or txt)
 
     Returns:
         Formatted list of authors
     """
+    if format not in ["HTML", "txt"]:
+        raise ValueError(f"Unsupported format: {format}")
     if isinstance(a, str):
         return a
     else:
         return comma_and_join(a)
 
 
-def markup_citation(r: typing.Dict[str, typing.Any]) -> str:
+def markup_citation(r: typing.Dict[str, typing.Any], format: str = "HTML") -> str:
     """Markup citations.
 
     Args:
         r: Citation
+        format: Format (HTML or txt)
 
     Returns:
         Formatted citation
     """
+    if format not in ["HTML", "txt"]:
+        raise ValueError(f"Unsupported format: {format}")
     out = ""
     if "author" in r:
-        out += markup_authors(r["author"])
+        out += markup_authors(r["author"], format)
     else:
-        out += "<i>(unknown author)</i>"
+        if format == "HTML":
+            out += "<i>(unknown author)</i>"
+        elif format == "txt":
+            out += "(unknown author)"
     if out[-1] != ".":
         out += "."
     out += f" {r['title']}"
     if "journal" in r:
-        out += f", <em>{r['journal']}</em>"
+        if format == "HTML":
+            out += f", <em>{r['journal']}</em>"
+        elif format == "txt":
+            out += f", {r['journal']}"
         if "volume" in r:
             out += f" {r['volume']}"
             if "issue" in r:
                 out += f"({r['issue']})"
         if "pagestart" in r and "pageend" in r:
-            out += f", {r['pagestart']}&ndash;{r['pageend']}"
+            if format == "HTML":
+                out += f", {r['pagestart']}&ndash;{r['pageend']}"
+            elif format == "txt":
+                out += f", {r['pagestart']}-{r['pageend']}"
     elif "howpublished" in r:
-        out += f", <em>{r['howpublished']}</em>"
+        if format == "HTML":
+            out += f", <em>{r['howpublished']}</em>"
+        elif format == "txt":
+            out += f", {r['howpublished']}"
     elif "arxiv" in r:
-        out += f", ar&Chi;iv: <a href='https://arxiv.org/abs/{r['arxiv']}'>{r['arxiv']}</a>"
+        if format == "HTML":
+            out += f", ar&Chi;iv: <a href='https://arxiv.org/abs/{r['arxiv']}'>{r['arxiv']}</a>"
+        elif format == "txt":
+            out += f", https://arxiv.org/abs/{r['arxiv']}"
     elif "thesis-institution" in r:
         out += f" (PhD thesis, {r['thesis-institution']})"
     if "booktitle" in r:
-        out += f", in <em>{r['booktitle']}</em>"
+        if format == "HTML":
+            out += f", in <em>{r['booktitle']}</em>"
+        elif format == "txt":
+            out += f", in {r['booktitle']}"
         if "editor" in r:
-            out += f" (eds: {markup_authors(r['editor'])})"
+            out += f" (eds: {markup_authors(r['editor'], format)})"
     if "year" in r:
         out += f", {r['year']}"
     out += "."
     if "doi" in r:
-        out += f" [DOI:&nbsp;<a href='https://doi.org/{r['doi']}'>{r['doi']}</a>]"
+        if format == "HTML":
+            out += f" [DOI:&nbsp;<a href='https://doi.org/{r['doi']}'>{r['doi']}</a>]"
+        elif format == "txt":
+            out += f" [https://doi.org/{r['doi']}]"
     if "url" in r:
-        out += f" [<a href='{r['url']}'>{r['url'].split('://')[1]}</a>]"
+        if format == "HTML":
+            out += f" [<a href='{r['url']}'>{r['url'].split('://')[1]}</a>]"
+        elif format == "txt":
+            out += f" [{r['url']}]"
     return out
 
 
