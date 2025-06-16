@@ -19,9 +19,9 @@ page_references: typing.List[str] = []
 
 def to_id(txt: str) -> str:
     """Convert a string to an id"""
-    out = quote_plus(txt)
-    out = out.replace("'", "")
+    out = txt.replace("'", "")
     out = out.replace('"', "")
+    out = quote_plus(txt)
     return out
 
 
