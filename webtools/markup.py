@@ -24,6 +24,7 @@ def to_id(txt: str) -> str:
     out = out.replace('"', "")
     return out
 
+
 def cap_first(txt: str) -> str:
     """Captialise first letter.
 
