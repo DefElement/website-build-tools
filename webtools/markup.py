@@ -17,6 +17,13 @@ from webtools.tools import comma_and_join
 page_references: typing.List[str] = []
 
 
+def to_id(txt: str) -> str:
+    """Convert a string to an id"""
+    out = quote_plus(txt)
+    out = out.replace("'", "")
+    out = out.replace('"', "")
+    return out
+
 def cap_first(txt: str) -> str:
     """Captialise first letter.
 
@@ -56,7 +63,7 @@ def heading_with_self_ref(hx: str, content: str, style: typing.Optional[str] = N
     Returns:
         Heading with self reference
     """
-    id = quote_plus(content)
+    id = to_id(content)
     out = f'<{hx} id="{id}"'
     if style is not None:
         out += f' style="{style}"'
