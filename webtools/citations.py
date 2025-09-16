@@ -190,7 +190,10 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
             out += " " * (10 - len(i)) + f"{i} = {{{r[j]}}},\n"
 
     # Page numbers
-    if "pagestart" in r and "pageend" in r:
-        out += f"     PAGES = {{{{{r['pagestart']}--{r['pageend']}}}}},\n"
+    if "pagestart" in r:
+        if "pageend" not in r or r["pagestart"] == r["pageend"]:
+            out += f"     PAGES = {{{{{r['pagestart']}}}}},\n"
+        else:
+            out += f"     PAGES = {{{{{r['pagestart']}--{r['pageend']}}}}},\n"
     out += "}"
     return out
