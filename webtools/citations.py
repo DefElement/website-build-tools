@@ -78,12 +78,20 @@ def markup_citation(r: typing.Dict[str, typing.Any], format: str = "HTML") -> st
     elif "thesis-institution" in r:
         out += f" (PhD thesis, {r['thesis-institution']})"
     if "booktitle" in r:
+        out += ","
+        if "chapter" in r:
+            out += f" chapter {r['chapter']}"
         if format == "HTML":
-            out += f", in <em>{r['booktitle']}</em>"
+            out += f" in <em>{r['booktitle']}</em>"
         elif format == "txt":
-            out += f", in {r['booktitle']}"
+            out += f" in {r['booktitle']}"
         if "editor" in r:
             out += f" (eds: {markup_authors(r['editor'], format)})"
+        if "pagestart" in r and "pageend" in r:
+            if format == "HTML":
+                out += f", {r['pagestart']}&ndash;{r['pageend']}"
+            elif format == "txt":
+                out += f", {r['pagestart']}-{r['pageend']}"
     if "year" in r:
         out += f", {r['year']}"
     out += "."
@@ -185,7 +193,13 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
             out += " " * (10 - len(i)) + f"{i} = {{{html_to_tex(r[j])}}},\n"
 
     # Numerical fields
-    for i, j in [("VOLUME", "volume"), ("NUMBER", "issue"), ("YEAR", "year"), ("DOI", "doi")]:
+    for i, j in [
+        ("VOLUME", "volume"),
+        ("NUMBER", "issue"),
+        ("YEAR", "year"),
+        ("DOI", "doi"),
+        ("CHAPTER", "chapter"),
+    ]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{r[j]}}},\n"
 
