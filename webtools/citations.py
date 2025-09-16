@@ -61,6 +61,10 @@ def markup_citation(r: typing.Dict[str, typing.Any], format: str = "HTML") -> st
                 out += f", {r['pagestart']}&ndash;{r['pageend']}"
             elif format == "txt":
                 out += f", {r['pagestart']}-{r['pageend']}"
+    elif "publisher" in r:
+        out += f", {r['publisher']}"
+        if "address" in r:
+            out += f", {r['address']}"
     elif "howpublished" in r:
         if format == "HTML":
             out += f", <em>{r['howpublished']}</em>"
@@ -93,6 +97,8 @@ def markup_citation(r: typing.Dict[str, typing.Any], format: str = "HTML") -> st
             out += f" [<a href='{r['url']}'>{r['url'].split('://')[1]}</a>]"
         elif format == "txt":
             out += f" [{r['url']}]"
+    if "note" in r:
+        out += f" [{r['note']}]"
     return out
 
 
@@ -167,12 +173,14 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
         ("TITLE", "title"),
         ("BOOKTITLE", "booktitle"),
         ("SCHOOL", "thesis-institution"),
+        ("PUBLISHER", "publisher"),
+        ("ADDRESS", "address"),
     ]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{wrap_caps(html_to_tex(r[j]))}}},\n"
 
     # Text fields
-    for i, j in [("JOURNAL", "journal"), ("HOWPUBLISHED", "howpublished")]:
+    for i, j in [("JOURNAL", "journal"), ("HOWPUBLISHED", "howpublished"), ["NOTE", "note"]]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{html_to_tex(r[j])}}},\n"
 
