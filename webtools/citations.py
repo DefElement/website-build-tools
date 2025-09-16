@@ -78,6 +78,8 @@ def markup_citation(r: typing.Dict[str, typing.Any], format: str = "HTML") -> st
     elif "thesis-institution" in r:
         out += f" (PhD thesis, {r['thesis-institution']})"
     if "booktitle" in r:
+        if "chapter" in r:
+            out += f", chapter {r['chapter']}"
         if format == "HTML":
             out += f", in <em>{r['booktitle']}</em>"
         elif format == "txt":
@@ -175,6 +177,7 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
         ("SCHOOL", "thesis-institution"),
         ("PUBLISHER", "publisher"),
         ("ADDRESS", "address"),
+        ("CHAPTER", "chapter"),
     ]:
         if j in r:
             out += " " * (10 - len(i)) + f"{i} = {{{wrap_caps(html_to_tex(r[j]))}}},\n"
