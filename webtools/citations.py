@@ -211,3 +211,25 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
             out += f"     PAGES = {{{{{r['pagestart']}--{r['pageend']}}}}},\n"
     out += "}"
     return out
+
+
+template = {
+    "author": None,
+    "title": "REQUIRED",
+    "journal": None,
+    "volume": None,
+    "issue": None,
+    "pagestart": None,
+    "pageend": None,
+    "publisher": None,
+    "address": None,
+    "howpublished": None,
+    "arxiv": None,
+    "thesis-institution": None,
+    "booktitle": None,
+    "editor": None,
+    "year": None,
+    "doi": None,
+    "url": None,
+    "note": None,
+}
