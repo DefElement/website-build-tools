@@ -215,7 +215,6 @@ def make_bibtex(id: str, r: typing.Dict[str, typing.Any]) -> str:
 
 template = {
     "type": None,
-    "id": "REQUIRED",
     "author": None,
     "title": "REQUIRED",
     "journal": None,
