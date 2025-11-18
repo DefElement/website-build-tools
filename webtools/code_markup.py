@@ -16,6 +16,7 @@ except ModuleNotFoundError:
 def _highlight(txt: str, comment_start: str, keywords: typing.List[str]) -> str:
     """General highlight function."""
     out = []
+    txt = txt.replace(" ", "&nbsp;")
     for line in txt.split("\n"):
         comment = ""
         if comment_start in line:
