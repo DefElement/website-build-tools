@@ -11,7 +11,7 @@ To install the latest release from PyPI, run:
 pip install website-build-tools
 ```
 
-To install the latest code from GitHub, run:
+To install the latest code from Github, run:
 
 ```bash
 pip install git+https://github.com/DefElement/website-build-tools.git

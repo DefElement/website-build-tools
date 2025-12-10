@@ -201,7 +201,7 @@ def list_contributors(format: str = "html") -> str:
         out += contributors_out
 
         if settings.github_token is None or settings.repo is None:
-            warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
+            warnings.warn("Building without Github token. Skipping search for Github contributors.")
         else:
             g = Github(settings.github_token)
             repo = g.get_repo(settings.repo)
@@ -248,7 +248,7 @@ def list_contributors(format: str = "html") -> str:
             names.append(info["name"])
 
         if settings.github_token is None or settings.repo is None:
-            warnings.warn("Building without GitHub token. Skipping search for GitHub contributors.")
+            warnings.warn("Building without Github token. Skipping search for Github contributors.")
         else:
             included = [info["github"] for info in people if "github" in info]
             g = Github(settings.github_token)
