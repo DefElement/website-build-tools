@@ -58,7 +58,7 @@ def python_highlight(txt: str) -> str:
         "#",
         [
             "assert",
-            "class"
+            "class",
             "def",
             "elif",
             "else",
