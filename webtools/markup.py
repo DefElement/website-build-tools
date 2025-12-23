@@ -425,8 +425,6 @@ def markup(content: str, root_dir: str = "") -> str:
 
     out = out.replace("(CODE_OF_CONDUCT.md)", "(code-of-conduct.md)")
 
-    out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
-
     if settings.insert_links is None:
         out = insert_links(out, root_dir)
     else:
@@ -437,6 +435,8 @@ def markup(content: str, root_dir: str = "") -> str:
         out = re.sub(a, b, out)
     for c, d in settings.str_extras:
         out = out.replace(c, d)
+
+    out = re.sub(r" *<ref ([^>]+)>", add_citation, out)
 
     out = re.sub(r"`([^`]+)`", r"<span style='font-family:monospace'>\1</span>", out)
 
