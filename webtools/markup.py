@@ -358,6 +358,13 @@ def markup(content: str, root_dir: str = "") -> str:
     content = preprocess(content)
     content = content.replace("\\vec", "\\mathbf")
 
+    nomd: typing.List[str] = []
+    while "<nomd>" in content:
+        before, after = content.split("<nomd>", 1)
+        inner, after = after.split("</nomd>", 1)
+        content = f"{before}<!!nomd{len(nomd)}>{after}"
+        nomd.append(inner)
+
     out = ""
     popen = False
     ulopen = False
@@ -456,7 +463,11 @@ def markup(content: str, root_dir: str = "") -> str:
         )
         out += "</ul>"
 
-    return insert_dates(out)
+    out = insert_dates(out)
+
+    for i, t in enumerate(nomd):
+        out = out.replace(f"<!!nomd{i}>", t)
+    return out
 
 
 def code_include(matches: typing.Match[str]) -> str:
