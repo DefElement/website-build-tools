@@ -11,3 +11,9 @@ def test_code_highlight_cpp():
     assert "<br />&nbsp;&nbsp;&nbsp;&nbsp;" in markup(
         "```python\nfor i in range(10):\n    print(i)\n```\n",
     )
+
+
+def test_nomd():
+    assert "[A](B)" not in markup("[A](B)<nomd>[C](D)</nomd>[E](F)")
+    assert "[C](D)" in markup("[A](B)<nomd>[C](D)</nomd>[E](F)")
+    assert "[E](F)" not in markup("[A](B)<nomd>[C](D)</nomd>[E](F)")
