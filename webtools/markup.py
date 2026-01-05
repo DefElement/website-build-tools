@@ -358,7 +358,7 @@ def markup(content: str, root_dir: str = "") -> str:
     content = preprocess(content)
     content = content.replace("\\vec", "\\mathbf")
 
-    nomd = []
+    nomd: typing.List[str] = []
     while "<nomd>" in content:
         before, after = content.split("<nomd>", 1)
         inner, after = after.split("</nomd>", 1)
