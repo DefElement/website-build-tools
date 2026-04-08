@@ -213,7 +213,7 @@ def list_contributors(format: str = "html") -> str:
                 if len(page) == 0:
                     break
                 for user in page:
-                    if user.login not in included:
+                    if user.login not in included and user.login != "github-actions[bot]":
                         extras.append((user.login, user.name))
                 i += 1
             if len(extras) > 0:
@@ -260,7 +260,7 @@ def list_contributors(format: str = "html") -> str:
                 if len(page) == 0:
                     break
                 for user in page:
-                    if user.login not in included:
+                    if user.login not in included and user.login != "github-actions[bot]":
                         if format == "bibtex":
                             names.append("others")
                         else:
